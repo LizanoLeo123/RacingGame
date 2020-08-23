@@ -12,6 +12,9 @@ public class CarController : MonoBehaviour
     private float _carBreak;
     private Rigidbody _rb;
 
+    //UI Manager to update de speedometer
+    UI_Manager _uiManager;
+
     //Control variables
     public float maxSteeringAngle = 50f;
     public float motorForce = 50f;
@@ -80,7 +83,8 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        //_rb.centerOfMass = new Vector3(0, -0.3f, 0);
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UI_Manager>();
+        _rb.centerOfMass = new Vector3(0, -0.3f, 0);
     }
 
     private void Update()
@@ -93,6 +97,27 @@ public class CarController : MonoBehaviour
         Steer();
         Accelerate();
         UpdateWheelPoses();
+        //_uiManager.updateNeedleAngle(_rb.);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.transform.tag == "Ramp")
+        {
+            BoxCollider _bc = GetComponent<BoxCollider>();
+            Debug.Log("Enter");
+            _bc.enabled = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "Ramp")
+        {
+            BoxCollider _bc = GetComponent<BoxCollider>();
+            Debug.Log("Exit"); 
+            _bc.enabled = true;
+        }
     }
 
 }
