@@ -83,16 +83,8 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-<<<<<<< HEAD
-<<<<<<< HEAD
-        _uiManager = GameObject.Find("UI_Manager").GetComponent<UI_Manager>();
-=======
-        //_rb.centerOfMass = new Vector3(0, -0.3f, 0);
->>>>>>> origin/Master
-=======
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UI_Manager>();
         _rb.centerOfMass = new Vector3(0, -0.3f, 0);
->>>>>>> origin/Master
     }
 
     private void Update()
@@ -105,7 +97,8 @@ public class CarController : MonoBehaviour
         Steer();
         Accelerate();
         UpdateWheelPoses();
-        //_uiManager.updateNeedleAngle(_rb.);
+        float speed = transform.InverseTransformDirection(_rb.velocity).z; //Current speed of the rigidBody of the car
+        _uiManager.updateNeedleAngle(speed);
     }
 
     private void OnTriggerEnter(Collider other)
