@@ -84,9 +84,14 @@ public class CarController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 <<<<<<< HEAD
+<<<<<<< HEAD
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UI_Manager>();
 =======
         //_rb.centerOfMass = new Vector3(0, -0.3f, 0);
+>>>>>>> origin/Master
+=======
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UI_Manager>();
+        _rb.centerOfMass = new Vector3(0, -0.3f, 0);
 >>>>>>> origin/Master
     }
 
