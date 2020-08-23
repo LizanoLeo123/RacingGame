@@ -8,13 +8,15 @@ public class CarController : MonoBehaviour
     private float _horizontalInput;
     private float _verticalInput;
     private float _steeringAngle;
+    private bool _burst = false;
+    private float _carBreak;
     private Rigidbody _rb;
 
     //UI Manager to update de speedometer
     UI_Manager _uiManager;
 
     //Control variables
-    public float maxSteeringAngle = 45f;
+    public float maxSteeringAngle = 50f;
     public float motorForce = 50f;
 
     //Wheels public elements
@@ -26,7 +28,14 @@ public class CarController : MonoBehaviour
     public void GetInput()
     {
         _horizontalInput = Input.GetAxis("Horizontal");
-        _verticalInput = Input.GetAxis("Vertical");
+        _verticalInput = Input.GetAxis("Accelerate");
+
+        //Debug.Log(transform.InverseTransformDirection(_rb.velocity).z);
+        //Debug.Log(_rb.GetPointVelocity(transform.position));
+        if (Input.GetAxis("Accelerate") > 0 && (transform.InverseTransformDirection(_rb.velocity).z >= -5 && transform.InverseTransformDirection(_rb.velocity).z < 3f))
+        {
+            _burst = true;
+        }
     }
 
     private void Steer()
@@ -43,6 +52,13 @@ public class CarController : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.UpArrow))
         //    _rb.AddForce(Vector3.forward * 100, ForceMode.Impulse);
         //transform.Translate(Vector3.forward * 10 * Time.deltaTime * _verticalInput);
+
+        if (_burst)
+        { //My car is still and i want to start moving
+            if (Input.GetAxis("Accelerate") < 0.5f)
+                _rb.AddRelativeForce(Vector3.forward * 2000, ForceMode.Impulse);
+            _burst = false;
+        }
     }
 
     private void UpdateWheelPoses()
@@ -67,12 +83,20 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+<<<<<<< HEAD
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UI_Manager>();
+=======
+        //_rb.centerOfMass = new Vector3(0, -0.3f, 0);
+>>>>>>> origin/Master
+    }
+
+    private void Update()
+    {
+        GetInput();
     }
 
     private void FixedUpdate()
     {
-        GetInput();
         Steer();
         Accelerate();
         UpdateWheelPoses();
@@ -98,4 +122,5 @@ public class CarController : MonoBehaviour
             _bc.enabled = true;
         }
     }
+
 }
