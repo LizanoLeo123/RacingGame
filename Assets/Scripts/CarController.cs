@@ -98,7 +98,9 @@ public class CarController : MonoBehaviour
         Accelerate();
         UpdateWheelPoses();
         float speed = transform.InverseTransformDirection(_rb.velocity).z; //Current speed of the rigidBody of the car
-        _uiManager.updateNeedleAngle(speed);
+        //Debug.Log(speed);
+        _uiManager.UpdateNeedleAngle(speed);
+        _uiManager.UpdateSpeedLabel(speed);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -108,17 +110,26 @@ public class CarController : MonoBehaviour
             BoxCollider _bc = GetComponent<BoxCollider>();
             Debug.Log("Enter");
             _bc.enabled = false;
+            StartCoroutine(ReactivateBody());
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private IEnumerator ReactivateBody()
     {
-        if (other.transform.tag == "Ramp")
-        {
-            BoxCollider _bc = GetComponent<BoxCollider>();
-            Debug.Log("Exit"); 
-            _bc.enabled = true;
-        }
+        yield return new WaitForSeconds(1);
+        BoxCollider _bc = GetComponent<BoxCollider>();
+        //Debug.Log("Exit");
+        _bc.enabled = true;
     }
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.transform.tag == "Ramp")
+    //    {
+    //        BoxCollider _bc = GetComponent<BoxCollider>();
+    //        Debug.Log("Exit"); 
+    //        _bc.enabled = true;
+    //    }
+    //}
 
 }
